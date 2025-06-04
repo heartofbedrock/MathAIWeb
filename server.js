@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
@@ -8,21 +8,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 app.post('/api/generate', async (req, res) => {
   const { topic = 'Mathematics', grade = '10', exam = false } = req.body;
   const prompt = `Create a ${exam ? 'final exam' : 'practice test'} for ${topic} grade ${grade}. Provide problems followed by step-by-step solutions and include marking guidelines.`;
 
   try {
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
     });
-    const output = completion.data.choices[0].message.content;
+    const output = completion.choices[0].message.content;
     res.json({ paper: output });
   } catch (err) {
     console.error(err);
