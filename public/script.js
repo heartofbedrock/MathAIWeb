@@ -7,7 +7,9 @@ document.getElementById('paperForm').addEventListener('submit', async (e) => {
   answerBlob = null;
   document.getElementById('downloadQuestions').style.display = 'none';
   document.getElementById('downloadAnswers').style.display = 'none';
-
+  
+document.getElementById('paperForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
   const topic = document.getElementById('topic').value;
   const grade = document.getElementById('grade').value;
   const exam = document.getElementById('exam').checked;
@@ -49,6 +51,20 @@ function download(blob, filename) {
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
+
+  
+  if (!res.ok) {
+    const err = await res.json();
+    document.getElementById('output').textContent = err.error || 'Failed to generate paper';
+    return;
+  }
+
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'paper.pdf';
+  
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -61,4 +77,5 @@ document.getElementById('downloadQuestions').addEventListener('click', () => {
 
 document.getElementById('downloadAnswers').addEventListener('click', () => {
   download(answerBlob, 'answers.pdf');
+  document.getElementById('output').textContent = 'Download started';
 });

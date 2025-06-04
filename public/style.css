@@ -43,6 +43,7 @@ button:hover {
   display: flex;
   gap: 10px;
 }
+
 pre {
   white-space: pre-wrap;
   background: #f1f1f1;
