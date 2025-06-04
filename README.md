@@ -1,6 +1,8 @@
 # MathAIWeb
 
 A minimal web application that generates math papers with step-by-step solutions using the OpenAI API. The server returns two PDFs: one with the questions only and another with the answers and marking guidelines.
+f66m3b-codex/build-ai-based-math-paper-generator-website
+A minimal web application that generates math papers with step-by-step solutions using the OpenAI API. The generated paper is returned as a downloadable PDF.
 
 ## Requirements
 
@@ -21,13 +23,10 @@ A minimal web application that generates math papers with step-by-step solutions
 
 3. Run the development server:
    ```bash
-   npm start
+
    ```
 
 The app will be available at `http://localhost:3000`.
-
-Submit a topic and grade in the form. While the paper is generated the page shows a progress bar.
-Once the PDFs are ready, buttons appear so you can download the questions and answers separately.
 
 ## Deployment
 

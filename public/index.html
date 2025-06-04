@@ -10,6 +10,8 @@
 <div class="container">
   <h1>Math Paper Generator</h1>
   <form id="paperForm" action="#">
+=======
+  <form id="paperForm">
     <label>
       Topic:
       <input type="text" id="topic" placeholder="Algebra" />
@@ -26,6 +28,11 @@
   <div id="progressContainer" style="display:none">
     <div id="progressBar"></div>
   </div>
+    <label>
+      <input type="checkbox" id="exam" /> Generate exam
+    </label>
+    <button type="submit">Generate</button>
+  </form>
   <div class="downloads">
     <button id="downloadQuestions" style="display:none">Download Questions</button>
     <button id="downloadAnswers" style="display:none">Download Answers</button>
