@@ -18,15 +18,13 @@ function stopLoading(interval) {
   document.getElementById('progressContainer').style.display = 'none';
 }
 
-document.getElementById('paperForm').addEventListener('submit', async (e) => {
+async function generatePaper(e) {
   e.preventDefault();
   questionBlob = null;
   answerBlob = null;
   document.getElementById('downloadQuestions').style.display = 'none';
   document.getElementById('downloadAnswers').style.display = 'none';
 
-document.getElementById('paperForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
   const topic = document.getElementById('topic').value;
   const grade = document.getElementById('grade').value;
   const exam = document.getElementById('exam').checked;
@@ -45,7 +43,6 @@ document.getElementById('paperForm').addEventListener('submit', async (e) => {
 
   stopLoading(interval);
   btn.disabled = false;
-  const outputEl = document.getElementById('output');
 
   if (!res.ok) {
     const err = await res.json();
@@ -68,39 +65,30 @@ document.getElementById('paperForm').addEventListener('submit', async (e) => {
   document.getElementById('downloadQuestions').style.display = 'inline-block';
   document.getElementById('downloadAnswers').style.display = 'inline-block';
   outputEl.textContent = 'Papers ready for download';
-});
+}
 
-function download(blob, filename) {
-  if (!blob) return;
-  const url = window.URL.createObjectURL(blob);
+document.getElementById('paperForm').addEventListener('submit', generatePaper);
+
+document.getElementById('downloadQuestions').addEventListener('click', () => {
+  if (!questionBlob) return;
+  const url = window.URL.createObjectURL(questionBlob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename;
-
-  
-  if (!res.ok) {
-    const err = await res.json();
-    document.getElementById('output').textContent = err.error || 'Failed to generate paper';
-    return;
-  }
-
-  const blob = await res.blob();
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'paper.pdf';
-  
+  a.download = 'questions.pdf';
   document.body.appendChild(a);
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url);
-}
-
-document.getElementById('downloadQuestions').addEventListener('click', () => {
-  download(questionBlob, 'questions.pdf');
 });
 
 document.getElementById('downloadAnswers').addEventListener('click', () => {
-  download(answerBlob, 'answers.pdf');
-  document.getElementById('output').textContent = 'Download started';
+  if (!answerBlob) return;
+  const url = window.URL.createObjectURL(answerBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'answers.pdf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
 });
