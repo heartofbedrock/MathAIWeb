@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
-const PDFDocument = require('pdfkit');
+const puppeteer = require('puppeteer');
 require('dotenv').config();
 
 const app = express();
@@ -13,15 +13,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-function createPdf(text) {
-  return new Promise((resolve) => {
-    const doc = new PDFDocument();
-    const chunks = [];
-    doc.on('data', (c) => chunks.push(c));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.text(text);
-    doc.end();
-  });
 }
 
 function createLatexPdf(latex) {
@@ -52,6 +43,9 @@ app.post('/api/generate', async (req, res) => {
 
     const questionPdf = await createLatexPdf(data.questions_latex);
     const answerPdf = await createLatexPdf(data.answers_latex);
+    const title = `${topic} Grade ${grade} ${exam ? 'Exam' : 'Worksheet'}`;
+    const questionPdf = await createWorksheet(title, 'Questions', data.questions);
+    const answerPdf = await createWorksheet(title, 'Solutions', data.answers);
 
     res.json({
       questionPdf: questionPdf.toString('base64'),
