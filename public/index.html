@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math AI Paper Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Math Paper Generator</h1>
+  <form id="paperForm">
+    <label>
+      Topic:
+      <input type="text" id="topic" placeholder="Algebra" />
+    </label>
+    <label>
+      Grade:
+      <input type="text" id="grade" placeholder="10" />
+    </label>
+    <label>
+      <input type="checkbox" id="exam" /> Generate exam
+    </label>
+    <button type="submit">Generate</button>
+  </form>
+  <pre id="output"></pre>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
