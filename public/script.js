@@ -1,18 +1,41 @@
 let questionBlob = null;
 let answerBlob = null;
 
+function startLoading() {
+  const container = document.getElementById('progressContainer');
+  const bar = document.getElementById('progressBar');
+  let width = 0;
+  container.style.display = 'block';
+  bar.style.width = '0%';
+  return setInterval(() => {
+    width = (width + 5) % 100;
+    bar.style.width = width + '%';
+  }, 200);
+}
+
+function stopLoading(interval) {
+  clearInterval(interval);
+  document.getElementById('progressContainer').style.display = 'none';
+}
+
 document.getElementById('paperForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   questionBlob = null;
   answerBlob = null;
   document.getElementById('downloadQuestions').style.display = 'none';
   document.getElementById('downloadAnswers').style.display = 'none';
-  
+
 document.getElementById('paperForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const topic = document.getElementById('topic').value;
   const grade = document.getElementById('grade').value;
   const exam = document.getElementById('exam').checked;
+
+  const outputEl = document.getElementById('output');
+  outputEl.textContent = 'Generating paper...';
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  const interval = startLoading();
 
   const res = await fetch('/api/generate', {
     method: 'POST',
@@ -20,6 +43,8 @@ document.getElementById('paperForm').addEventListener('submit', async (e) => {
     body: JSON.stringify({ topic, grade, exam })
   });
 
+  stopLoading(interval);
+  btn.disabled = false;
   const outputEl = document.getElementById('output');
 
   if (!res.ok) {

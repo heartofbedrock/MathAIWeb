@@ -9,6 +9,8 @@
 <body>
 <div class="container">
   <h1>Math Paper Generator</h1>
+  <form id="paperForm" action="#">
+=======
   <form id="paperForm">
     <label>
       Topic:
@@ -18,6 +20,14 @@
       Grade:
       <input type="text" id="grade" placeholder="10" />
     </label>
+    <label class="exam-option">
+      <input type="checkbox" id="exam" /> Generate exam
+    </label>
+    <button type="submit" id="generateBtn">Generate</button>
+  </form>
+  <div id="progressContainer" style="display:none">
+    <div id="progressBar"></div>
+  </div>
     <label>
       <input type="checkbox" id="exam" /> Generate exam
     </label>

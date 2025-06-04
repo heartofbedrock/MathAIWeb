@@ -1,4 +1,6 @@
 body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef1f5;
   font-family: Arial, sans-serif;
   background: #f7f7f7;
   margin: 0;
@@ -27,6 +29,11 @@ form {
 label {
   margin-bottom: 10px;
 }
+.exam-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 button {
   padding: 10px;
   background: #007bff;
@@ -43,11 +50,24 @@ button:hover {
   display: flex;
   gap: 10px;
 }
-
 pre {
   white-space: pre-wrap;
   background: #f1f1f1;
   padding: 10px;
   border-radius: 4px;
   margin-top: 20px;
+}
+#progressContainer {
+  margin-top: 15px;
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 12px;
+}
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: #007bff;
+  transition: width 0.2s ease;
 }
