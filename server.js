@@ -13,8 +13,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-}
-
 function createLatexPdf(latex) {
   // pdfkit does not natively render LaTeX so we simply embed the text.
   return createPdf(latex);
@@ -40,12 +38,6 @@ app.post('/api/generate', async (req, res) => {
       console.error('Failed to parse JSON from OpenAI');
       return res.status(500).json({ error: 'Invalid AI response' });
     }
-
-    const questionPdf = await createLatexPdf(data.questions_latex);
-    const answerPdf = await createLatexPdf(data.answers_latex);
-    const title = `${topic} Grade ${grade} ${exam ? 'Exam' : 'Worksheet'}`;
-    const questionPdf = await createWorksheet(title, 'Questions', data.questions);
-    const answerPdf = await createWorksheet(title, 'Solutions', data.answers);
 
     res.json({
       questionPdf: questionPdf.toString('base64'),

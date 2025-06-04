@@ -62,7 +62,7 @@ async function generatePaper(e) {
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url);
-});
+
 document.getElementById('downloadAnswers').addEventListener('click', () => {
   if (!answerBlob) return;
   const url = window.URL.createObjectURL(answerBlob);
