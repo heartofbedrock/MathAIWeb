@@ -1,10 +1,5 @@
 # MathAIWeb
 
-A minimal web application that generates math papers with step-by-step solutions using the OpenAI API. The generated paper is returned as a downloadable PDF.
-
-## Setup
-
-1. Install dependencies (includes the `pdfkit` package for PDF generation):
    ```bash
    npm install
    ```
@@ -21,7 +16,6 @@ A minimal web application that generates math papers with step-by-step solutions
 
 The app will be available at `http://localhost:3000`.
 
-Submitting the form will download a `paper.pdf` file containing the generated test or exam.
 
 ## Deployment
 
