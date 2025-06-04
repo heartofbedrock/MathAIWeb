@@ -51,36 +51,18 @@ async function generatePaper(e) {
   }
 
   const { questionPdf, answerPdf } = await res.json();
-
-  function b64ToBlob(b64) {
-    const binary = atob(b64);
-    const arr = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
-    return new Blob([arr], { type: 'application/pdf' });
-  }
-
   questionBlob = b64ToBlob(questionPdf);
   answerBlob = b64ToBlob(answerPdf);
-
   document.getElementById('downloadQuestions').style.display = 'inline-block';
   document.getElementById('downloadAnswers').style.display = 'inline-block';
   outputEl.textContent = 'Papers ready for download';
 }
 
-document.getElementById('paperForm').addEventListener('submit', generatePaper);
-
-document.getElementById('downloadQuestions').addEventListener('click', () => {
-  if (!questionBlob) return;
-  const url = window.URL.createObjectURL(questionBlob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'questions.pdf';
   document.body.appendChild(a);
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url);
 });
-
 document.getElementById('downloadAnswers').addEventListener('click', () => {
   if (!answerBlob) return;
   const url = window.URL.createObjectURL(answerBlob);

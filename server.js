@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
-const PDFDocument = require('pdfkit');
+const puppeteer = require('puppeteer');
 require('dotenv').config();
 
 const app = express();
@@ -13,31 +13,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-function createWorksheet(title, sectionTitle, text) {
-  return new Promise((resolve) => {
-    const doc = new PDFDocument({ margin: 50 });
-    const chunks = [];
-    doc.on('data', (c) => chunks.push(c));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-
-    // Title page
-    doc.fontSize(24).text(title, { align: 'center' });
-    doc.addPage();
-
-    // Section heading and content
-    doc.fontSize(18).text(sectionTitle, { underline: true });
-    doc.moveDown();
-    doc.fontSize(12).text(text, { align: 'left' });
-
-    doc.end();
-  });
 }
 
 app.post('/api/generate', async (req, res) => {
   const { topic = 'Mathematics', grade = '10', exam = false } = req.body;
-  const prompt = `Create a ${exam ? 'final exam' : 'practice test'} for ${topic} grade ${grade}. ` +
-    'Return your response strictly as JSON with two fields: "questions" (the question paper with marks only, no answers) ' +
-    'and "answers" (the corresponding step-by-step solutions and marking guidelines).';
 
   try {
     const completion = await openai.chat.completions.create({
