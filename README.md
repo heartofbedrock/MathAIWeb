@@ -1,7 +1,7 @@
 # MathAIWeb
 
-f66m3b-codex/build-ai-based-math-paper-generator-website
-A minimal web application that generates math papers with step-by-step solutions using the OpenAI API. The generated paper is returned as a downloadable PDF.
+A minimal web application that generates math papers with step-by-step solutions using the OpenAI API. The server returns two PDFs: one with the questions only and another with the answers and marking guidelines.
+After submitting the form, download buttons will appear for the question paper and the answer sheet.
 
 ## Requirements
 

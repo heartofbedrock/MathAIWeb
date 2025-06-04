@@ -38,6 +38,11 @@ button {
 button:hover {
   background: #0056b3;
 }
+.downloads {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
 pre {
   white-space: pre-wrap;
   background: #f1f1f1;
