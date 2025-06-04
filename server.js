@@ -13,13 +13,22 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-function createPdf(text) {
+function createWorksheet(title, sectionTitle, text) {
   return new Promise((resolve) => {
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({ margin: 50 });
     const chunks = [];
     doc.on('data', (c) => chunks.push(c));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.text(text);
+
+    // Title page
+    doc.fontSize(24).text(title, { align: 'center' });
+    doc.addPage();
+
+    // Section heading and content
+    doc.fontSize(18).text(sectionTitle, { underline: true });
+    doc.moveDown();
+    doc.fontSize(12).text(text, { align: 'left' });
+
     doc.end();
   });
 }
@@ -29,9 +38,6 @@ app.post('/api/generate', async (req, res) => {
   const prompt = `Create a ${exam ? 'final exam' : 'practice test'} for ${topic} grade ${grade}. ` +
     'Return your response strictly as JSON with two fields: "questions" (the question paper with marks only, no answers) ' +
     'and "answers" (the corresponding step-by-step solutions and marking guidelines).';
-app.post('/api/generate', async (req, res) => {
-  const { topic = 'Mathematics', grade = '10', exam = false } = req.body;
-  const prompt = `Create a ${exam ? 'final exam' : 'practice test'} for ${topic} grade ${grade}. Provide problems followed by step-by-step solutions and include marking guidelines.`;
 
   try {
     const completion = await openai.chat.completions.create({
@@ -47,22 +53,14 @@ app.post('/api/generate', async (req, res) => {
       return res.status(500).json({ error: 'Invalid AI response' });
     }
 
-    const questionPdf = await createPdf(data.questions);
-    const answerPdf = await createPdf(data.answers);
+    const title = `${topic} Grade ${grade} ${exam ? 'Exam' : 'Worksheet'}`;
+    const questionPdf = await createWorksheet(title, 'Questions', data.questions);
+    const answerPdf = await createWorksheet(title, 'Solutions', data.answers);
 
     res.json({
       questionPdf: questionPdf.toString('base64'),
       answerPdf: answerPdf.toString('base64'),
     });
-    const output = completion.choices[0].message.content;
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="paper.pdf"');
-
-    const doc = new PDFDocument();
-    doc.pipe(res);
-    doc.text(output);
-    doc.end();
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to generate paper' });
