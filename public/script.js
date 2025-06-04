@@ -10,6 +10,5 @@ document.getElementById('paperForm').addEventListener('submit', async (e) => {
     body: JSON.stringify({ topic, grade, exam })
   });
 
-  const data = await res.json();
-  document.getElementById('output').textContent = data.paper || data.error;
+
 });

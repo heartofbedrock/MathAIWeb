@@ -1,10 +1,5 @@
 # MathAIWeb
 
-A minimal web application that generates math papers with step-by-step solutions using the OpenAI API.
-
-## Setup
-
-1. Install dependencies:
    ```bash
    npm install
    ```
@@ -20,6 +15,7 @@ A minimal web application that generates math papers with step-by-step solutions
    ```
 
 The app will be available at `http://localhost:3000`.
+
 
 ## Deployment
 
