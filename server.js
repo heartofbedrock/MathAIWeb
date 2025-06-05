@@ -14,6 +14,15 @@ const openai = new OpenAI({
 });
 
 function createPdf(text) {
+  if (typeof text !== 'string') {
+    if (Array.isArray(text)) {
+      text = text.join('\n');
+    } else if (text && typeof text === 'object') {
+      text = Object.values(text).join('\n');
+    } else {
+      text = String(text);
+    }
+  }
   return new Promise((resolve) => {
     const doc = new PDFDocument();
     const chunks = [];
